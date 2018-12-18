@@ -1,0 +1,38 @@
+{
+  "name": "load-monitoring",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/jest": "23.3.10",
+    "@types/node": "10.12.15",
+    "@types/react": "16.7.17",
+    "@types/react-dom": "16.0.11",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts": "2.1.1",
+    "tslint": "5.11.0",
+    "tslint-react": "3.6.0",
+    "typescript": "3.2.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "bundle": "react-scripts build",
+    "build": "npm run test && npm run bundle",
+    "build:ci": "npm run test:ci && npm run bundle",
+    "test": "npm run test:unit:coverage && npm run lint",
+    "test:unit": "react-scripts test",
+    "test:unit:coverage": "react-scripts test --coverage",
+    "test:ci": "react-scripts test --coverage --ci && npm run lint",
+    "lint": "tslint -p tsconfig.json -c tslint.json src/**/*.{ts,tsx}",
+    "lint:fix": "tslint -p tsconfig.json -c tslint.json src/**/*.{ts,tsx} --fix"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
