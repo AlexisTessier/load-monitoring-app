@@ -1,9 +1,13 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
+
+import { LoadChannel, TextView } from './models-views/LoadChannel'
 
 export interface AppProps {
   name: string
 }
 
-export function App(props: AppProps): ReactElement<AppProps> {
-  return <h1>Hello world !!!</h1>
+export function App(props: AppProps): React.ReactElement<AppProps> {
+  return <LoadChannel View={TextView}
+  	nameSource="input"
+  />
 }

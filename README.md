@@ -4,8 +4,8 @@
 
 ### Requirements
 
-+ make
 + docker
++ make (optional actually, because you can copy/paste the docker commands in the Makefile)
 + nothing more :)
 
 ## Start working
@@ -18,15 +18,21 @@ make build_dev_image
 
 To know what the image contains, look at the dev.Dockerfile (the dev image is built from it).
 
-Then you can run a container using the image:
+Then you can run dev containers using the image:
 
 ```
-make dev
+make dev_server
 ```
 
-This will also expose a port (see which one in top of the Makefile) for accessing the app from your browser while developing.
+and
 
-Eventually, you can do a *make dev_shell* to also run a container based on the dev image but which will not expose the ports (useful if you want to run other yarn commands while yarn start is running yet)
+```
+make dev_client
+```
+
+These will expose the ports (see which ones in top of the Makefile) for accessing the client or the server from your browser while developing.
+
+Eventually, you can do a *make dev_shell* to also run a container based on the dev image but which will not expose the ports (useful if you want to run other yarn commands while yarn start is running yet for example)
 
 ## Build the project
 
@@ -34,17 +40,18 @@ Eventually, you can do a *make dev_shell* to also run a container based on the d
 make build
 ```
 
-This will build the dist files in *load-monitoring-client/build* after passing all the tests, in CI environment compatible way.
+This will:
 
-## Client app
++ build the dist files in *load-monitoring-client/build* after passing all the tests, in CI environment compatible way.
++ build the whole project... TODO
 
-Once your are in the working directory of the dev container:
+## Server
 
-```
-cd load-monitoring-client
-```
+The working directory of the *make dev_server* container is *load-monitoring-server*
 
-And you can start to work !!!
+## Client
+
+The working directory of the *make dev_client* container is *load-monitoring-client*
 
 ### Stack
 
@@ -66,8 +73,8 @@ yarn start
 
 ### Run tests and linter
 
-+ **yarn run test:unit** will run the tests
-+ **yarn run test:unit:coverage** will run the tests and generate a coverage report
++ **yarn run test:watch** will run the tests in watch mode
++ **yarn run test:coverage** will run the tests and generate a coverage report
 + **yarn run lint** will run tslint on the files
 + **yarn run lint:fix** will fix lint errors when possible
 + **yarn test** will run the test, generate the coverage report and run the linter

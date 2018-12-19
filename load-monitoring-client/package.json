@@ -1,5 +1,5 @@
 {
-  "name": "load-monitoring",
+  "name": "load-monitoring-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,10 +19,10 @@
     "bundle": "react-scripts build",
     "build": "npm run test && npm run bundle",
     "build:ci": "npm run test:ci && npm run bundle",
-    "test": "npm run test:unit:coverage && npm run lint",
-    "test:unit": "react-scripts test",
-    "test:unit:coverage": "react-scripts test --coverage",
-    "test:ci": "react-scripts test --coverage --ci && npm run lint",
+    "test": "npm run test:coverage && npm run lint",
+    "test:watch": "react-scripts test --watch --env=node",
+    "test:coverage": "react-scripts test --coverage --env=node",
+    "test:ci": "react-scripts test --coverage --ci --env=node && npm run lint",
     "lint": "tslint -p tsconfig.json -c tslint.json src/**/*.{ts,tsx}",
     "lint:fix": "tslint -p tsconfig.json -c tslint.json src/**/*.{ts,tsx} --fix"
   },
