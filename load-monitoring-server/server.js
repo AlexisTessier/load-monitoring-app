@@ -18,14 +18,26 @@ const loadChannel = new SseChannel({
   }
 })
 
+function currentLoad(){
+  const loadAverageIndex = 7
+  return [shell.exec('uptime').stdout.split(' ')
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+  [loadAverageIndex]].map(load => parseFloat(load))[0]
+}
+
 setInterval(()=>{
   const id = Date.now()
   console.log(`update ${id}`)
+  const data = {
+    timestamp: id,
+    load: currentLoad()
+  }
 
   loadChannel.send({
     id,
     event: 'update',
-    data: `hello world`
+    data
   });
 }, updateInterval)
 
