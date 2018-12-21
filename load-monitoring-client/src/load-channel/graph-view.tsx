@@ -1,21 +1,39 @@
 import React from 'react'
+import styled from 'styled-components'
 
-import { ViewComponent, ViewElement } from '../utils/model-view'
-import { ViewProps } from './model-view'
+import { VictoryTheme, VictoryChart, VictoryArea } from 'victory'
 
-function EventGraphPoint(props: any){
-	return <div>
-		timestamp: {props.timestamp}
-		<br/>
-		load: {props.load}
-		<hr/>
-	</div>
+import { ViewComponent, ViewElement } from '../mvc'
+import { LoadChannel, LoadChannelEvent } from './model'
+
+const Container = styled.div`
+  margin: 0 auto;
+  padding:0;
+  width: 100%;
+  height: 100vh;
+`
+
+const areaStyle = {
+  data: {
+    fill: "#38a1e5"
+  }
+}
+
+interface Position { x: number, y: number }
+
+function toData(events: LoadChannelEvent[]): Position[] {
+  return events.map(({timestamp: x, load: y}) => ({x, y}))
 }
 
 export function GraphView({
-	events
-}: ViewProps): ViewElement {
-	return <div>
-		{events.map((event, i) => <EventGraphPoint key={i} {...event}/>)}
-	</div>
+  events
+}: LoadChannel): ViewElement {
+  return <Container> 
+    <VictoryChart width={800} theme={VictoryTheme.material}>
+      <VictoryArea
+        style={areaStyle}
+        data={toData(events)}
+      />
+    </VictoryChart>
+  </Container>
 }

@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import { createGlobalStyle } from 'styled-components' 
+import reset from 'styled-reset'
 
-import { MakeLoadChannelService } from './load-channel/service'
-import { LoadChannel } from './load-channel/model-view'
+import { createLoadChannelStore } from './load-channel/store'
+import { LoadChannelController } from './load-channel/controller'
 import { GraphView } from './load-channel/graph-view'
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+`
 
 export interface AppProps {
   name: string
@@ -10,7 +16,10 @@ export interface AppProps {
 
 export function App(props: AppProps): React.ReactElement<any> {
   const loadChannelEventSource = new EventSource('http://localhost:3002/channel/load')
-  const loadChannelService = MakeLoadChannelService(loadChannelEventSource)
+  const loadChannel = createLoadChannelStore(loadChannelEventSource)
 
-  return <LoadChannel View={GraphView} loadChannel={loadChannelService} />
+  return <Fragment>
+    <GlobalStyle />
+    <LoadChannelController View={GraphView} store={loadChannel}/>
+  </Fragment>
 }
