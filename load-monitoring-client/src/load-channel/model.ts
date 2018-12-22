@@ -1,6 +1,10 @@
+import { Timestamp } from '../constants/time'
+
+export type Load = number
+
 export interface LoadChannelEvent {
-	timestamp: number,
-	load: number
+	timestamp: Timestamp,
+	load: Load
 }
 
 export interface LoadChannel {

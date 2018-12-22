@@ -21,17 +21,21 @@ export type StoreUpdateHandler<Model> = {
 	reject: (err: Error) => void
 }
 
-export function waitForUpdate<Model>(updateHandlers: StoreUpdateHandler<Model>[]): Promise<Model>{
+export function waitForUpdate<Model>({ updateHandlers }: {
+	updateHandlers: StoreUpdateHandler<Model>[]
+}): Promise<Model>{
 	return new Promise((resolve, reject) => updateHandlers.push({
 		resolve, reject
 	}))
 }
 
-export function updateStore<Model>(
+export function updateStore<Model>({
+	model, updateHandlers, error
+}: {
 	model: Model,
 	updateHandlers: StoreUpdateHandler<Model>[],
 	error?: Error
-): StoreUpdateHandler<Model>[]  {
+}): StoreUpdateHandler<Model>[]  {
 
 	updateHandlers.forEach(_ => error ? _.reject(error) : _.resolve(model))
 
@@ -44,22 +48,32 @@ export type ControllerComponent<Model> = FunctionComponent<{
 }>
 export type ControllerElement = ReactElement<any>
 
-export function createControllerEffect<Model>(
+export function createControllerEffect<Model>({
+	store, setModel, errorHandler, ignoreErrorAfterCleanup
+}:{
 	store: Store<Model>,
-	setModel: Dispatch<SetStateAction<Model>>
-): EffectCallback {
+	setModel: Dispatch<SetStateAction<Model>>,
+	errorHandler?: (err: Error) => void,
+	ignoreErrorAfterCleanup?: boolean
+}): EffectCallback {
 	return ()=>{
-		let canceled = false
-		store.waitForUpdate().then((update) => {
-			if(canceled) return;
+		let cleanedUp = false
+		function updateModel(update: Model){
+			if(cleanedUp) return;
 			setModel(update)
-		}).catch(err => {
-			if(canceled) return;
-			setModel(store.model)
+		}
+
+		store.waitForUpdate().then((update) => {
+			updateModel(update)
+		}).catch((err: Error) => {
+			updateModel(store.model)
+			if(errorHandler && !ignoreErrorAfterCleanup) {
+				errorHandler(err)
+			}
 		})
 
 		return ()=>{
-			canceled = true
+			cleanedUp = true
 		}
 	}
 }
@@ -75,7 +89,7 @@ export function createController<Model>(): ControllerComponent<Model> {
 		const [model, setModel] = useState(store.model)
 
 		useEffect(
-			createControllerEffect(store, setModel)
+			createControllerEffect({store, setModel})
 		)
 
 		return <View {...model}/>

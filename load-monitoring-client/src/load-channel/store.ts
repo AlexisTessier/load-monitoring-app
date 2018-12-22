@@ -1,8 +1,7 @@
 import { Store, StoreUpdateHandler, waitForUpdate, updateStore } from '../mvc'
 import { LoadChannel, LoadChannelEvent, tryCreateLoadChannelEvent } from './model'
 
-const second = 1000
-const minute = 60 * second
+import { minute } from '../constants/time'
 
 export interface LoadChannelStore extends Store<LoadChannel> {}
 
@@ -44,7 +43,7 @@ export function createLoadChannelStore(eventSource: EventSource): LoadChannelSto
 
 		model = { events }
 		
-		updateHandlers = updateStore(model, updateHandlers, error)
+		updateHandlers = updateStore({model, updateHandlers, error})
 	}, 100)
 
 	return {
@@ -52,7 +51,7 @@ export function createLoadChannelStore(eventSource: EventSource): LoadChannelSto
 			return model
 		},
 		waitForUpdate(){
-			return waitForUpdate(updateHandlers)
+			return waitForUpdate({updateHandlers})
 		}
 	}
 }

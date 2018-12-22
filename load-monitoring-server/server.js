@@ -19,7 +19,7 @@ const loadChannel = new SseChannel({
 })
 
 function currentLoad(){
-  const loadAverageIndex = 7
+  const loadAverageIndex = 5
   return [shell.exec('uptime').stdout.split(' ')
     .map(s => s.trim())
     .filter(s => s.length > 0)

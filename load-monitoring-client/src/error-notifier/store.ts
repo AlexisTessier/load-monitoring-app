@@ -15,12 +15,12 @@ export function createErrorNotifierStore(): ErrorNotifierStore {
 	function updateModel(error?: Error){
 		model = { errors }
 
-		updateHandlers = updateStore(model, updateHandlers, error)
+		updateHandlers = updateStore({model, updateHandlers, error})
 	}
 
 	return {
 		get model(){ return model },
-		waitForUpdate(){ return waitForUpdate(updateHandlers) },
+		waitForUpdate(){ return waitForUpdate({updateHandlers}) },
 		notify(error: Error){
 			if(!yetHandledErrors.has(error)){
 				errors.push(error)
