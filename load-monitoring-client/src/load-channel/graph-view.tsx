@@ -102,8 +102,12 @@ export function GraphView({
         label='Last minute average load'
         fixLabelOverlap={true}
         style={{
+          axisLabel: {
+            fontSize: 10,
+            translate: -20
+          },
           tickLabels: {
-            marginRight: 20
+            fontSize: 10
           }
         }}
       />

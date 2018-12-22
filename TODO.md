@@ -1,6 +1,5 @@
 #TO DO
 
-+ Axis format
 + Axis legends
 + uptime channel => display key stats
 + alert channel
