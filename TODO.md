@@ -1,8 +1,7 @@
 #TO DO
 
-+ Axis legends
 + Axis format
-+ Axis show threshold
++ Axis legends
 + uptime channel => display key stats
 + alert channel
 + use webworker / push notification ?
