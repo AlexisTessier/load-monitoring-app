@@ -1,6 +1,5 @@
 #TO DO
 
-+ Axis legends
 + uptime channel => display key stats
 + alert channel
 + use webworker / push notification ?

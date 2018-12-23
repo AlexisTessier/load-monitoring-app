@@ -1,5 +1,4 @@
-export type Timestamp = number
-export type Duration = number
+import { Duration } from '../definitions'
 
 export const millisecond: Duration = 1
 export const second: Duration = 1000 * millisecond

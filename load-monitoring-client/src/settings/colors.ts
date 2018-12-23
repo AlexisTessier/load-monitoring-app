@@ -1,4 +1,4 @@
-export type Color = string
+import { Color } from '../definitions'
 
 export const green: Color = '#d1db4a'
 export const orange: Color = '#ff7950'
