@@ -9,12 +9,15 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
 `
 
-const uptimeChannelOrigin = `${sseOrigin}/uptime`
-const uptimeChannelEventSource = new EventSource(uptimeChannelOrigin)
+const uptimeChannelEventSource = new EventSource(`${sseOrigin}/uptime`)
+const notificationChannelEventSource = new EventSource(`${sseOrigin}/notification`)
 
 export function App(): React.ReactElement<any> {
   return <Fragment>
     <GlobalStyle />
-    <MonitoringPage uptimeChannelEventSource={uptimeChannelEventSource}/>
+    <MonitoringPage
+    	uptimeChannelEventSource={uptimeChannelEventSource}
+    	notificationChannelEventSource={notificationChannelEventSource}
+    />
   </Fragment>
 }

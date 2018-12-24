@@ -1,5 +1,4 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, {Fragment} from 'react'
 
 import {
   VictoryTheme,
@@ -13,20 +12,15 @@ import {
   VictoryLabel
 } from 'victory'
 
-import { ViewComponent, ViewElement } from '../../mvc'
+import { ViewElement } from '../../mvc'
 import { Timestamp } from '../../definitions'
 import { minute } from '../../constants/durations'
 import { green, red, orange } from '../../settings/colors'
 import { average } from '../../utils/average'
 
-import { LoadMonitoring, Load, getLoadUtcTime, getLoadValue } from './load-monitoring.model'
+import { LoadingData } from '../../components/loading-data'
 
-const Container = styled.div`
-  margin: 0 auto;
-  padding:0;
-  width: 92%;
-  height: 100vh;
-`
+import { LoadMonitoring, Load, getLoadUtcTime, getLoadValue } from './load-monitoring.model'
 
 export const lowAverageLoadColor = green
 export const highAverageLoadColor = red
@@ -64,7 +58,7 @@ export function GraphView({
   highLoadThreshold
 }: LoadMonitoring): ViewElement {
   if(loads.length === 0){
-    return <Container>Loading data...</Container>
+    return <LoadingData/>
   }
 
   const now = Date.now()
@@ -89,7 +83,7 @@ export function GraphView({
   const timezoneOffset = new Date().getTimezoneOffset() * minute
   const formatLoadUtcTime = (x: Timestamp) => new Date(x + timezoneOffset).toLocaleTimeString()
 
-  return <Container>
+  return <Fragment>
     <VictoryChart
       width={800}
       theme={VictoryTheme.material}
@@ -130,5 +124,5 @@ export function GraphView({
         y={getHighLoadThreshold}
       />
     </VictoryChart>
-  </Container>
+  </Fragment>
 }

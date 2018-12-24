@@ -23,7 +23,7 @@ export interface UptimeChannel {
 
 export function tryCreateUptimeChannelUpdateEvent(raw: UptimeChannelUpdateEvent): UptimeChannelUpdateEvent {
 	const error = (reason: string) => new Error(
-		`Failed to create a UptimeChannelEventData from raw value. ${reason}`
+		`Failed to create a UptimeChannelUpdateEvent from raw value. ${reason}`
 	)
 
 	if(typeof raw !== 'object'){

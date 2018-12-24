@@ -48,12 +48,14 @@ export type ControllerComponent<Model> = FunctionComponent<{
 }>
 export type ControllerElement = ReactElement<any>
 
+export type ErrorHandler = (err: Error) => void
+
 export function createControllerEffect<Model>({
 	store, setModel, errorHandler, ignoreErrorAfterCleanup
 }:{
 	store: Store<Model>,
 	setModel: Dispatch<SetStateAction<Model>>,
-	errorHandler?: (err: Error) => void,
+	errorHandler?: ErrorHandler,
 	ignoreErrorAfterCleanup?: boolean
 }): EffectCallback {
 	return ()=>{
@@ -67,7 +69,7 @@ export function createControllerEffect<Model>({
 			updateModel(update)
 		}).catch((err: Error) => {
 			updateModel(store.model)
-			if(errorHandler && !ignoreErrorAfterCleanup) {
+			if(errorHandler && (!cleanedUp || ignoreErrorAfterCleanup)) {
 				errorHandler(err)
 			}
 		})
@@ -78,7 +80,13 @@ export function createControllerEffect<Model>({
 	}
 }
 
-export function createController<Model>(): ControllerComponent<Model> {
+export function createController<Model>({
+	errorHandler,
+	ignoreErrorAfterCleanup
+}: {
+	errorHandler?: ErrorHandler,
+	ignoreErrorAfterCleanup?: boolean
+}): ControllerComponent<Model> {
 	return function Controller({
 		View,
 		store
@@ -89,7 +97,12 @@ export function createController<Model>(): ControllerComponent<Model> {
 		const [model, setModel] = useState(store.model)
 
 		useEffect(
-			createControllerEffect({store, setModel})
+			createControllerEffect({
+				store,
+				setModel,
+				errorHandler,
+				ignoreErrorAfterCleanup
+			})
 		)
 
 		return <View {...model}/>

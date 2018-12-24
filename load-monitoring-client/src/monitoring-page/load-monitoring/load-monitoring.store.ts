@@ -3,8 +3,8 @@ import { minute } from '../../constants/durations'
 
 import { UptimeChannelStore } from '../uptime-channel/uptime-channel.store'
 import {
-	getUpdateEventUtcTime,
-	getUpdateEventLastMinuteAverageLoad
+  getUpdateEventUtcTime,
+  getUpdateEventLastMinuteAverageLoad
 } from '../uptime-channel/uptime-channel.model'
 
 import { LoadMonitoring, LoadValue, Load } from './load-monitoring.model'
@@ -12,45 +12,45 @@ import { LoadMonitoring, LoadValue, Load } from './load-monitoring.model'
 export interface LoadMonitoringStore extends Store<LoadMonitoring> {}
 
 export function createLoadMonitoringStore({
-	highLoadThreshold,
-	uptimeChannelStore
+  highLoadThreshold,
+  uptimeChannelStore
 }: {
-	highLoadThreshold: LoadValue,
-	uptimeChannelStore: UptimeChannelStore
+  highLoadThreshold: LoadValue,
+  uptimeChannelStore: UptimeChannelStore
 }): LoadMonitoringStore {
-	let updateHandlers: StoreUpdateHandler<LoadMonitoring>[] = []
-	let loads: Load[] = []
-	let model: LoadMonitoring = {
-		loads,
-		highLoadThreshold
-	}
+  let updateHandlers: StoreUpdateHandler<LoadMonitoring>[] = []
+  let loads: Load[] = []
+  let model: LoadMonitoring = {
+    loads,
+    highLoadThreshold
+  }
 
-	function update(){
-		let error: Error
+  function update(){
+    let error: Error
 
-		uptimeChannelStore.waitForUpdate().then(uptimeChannel => {
-			loads = uptimeChannel.updateEvents.map(_ => ({
-				utcTime: getUpdateEventUtcTime(_),
-				value: getUpdateEventLastMinuteAverageLoad(_)
-			}))
+    uptimeChannelStore.waitForUpdate()
+      .then(uptimeChannel => {
+        loads = uptimeChannel.updateEvents.map(_ => ({
+          utcTime: getUpdateEventUtcTime(_),
+          value: getUpdateEventLastMinuteAverageLoad(_)
+        }))
+      })
+      .catch(err => error = err)
+      .then(()=>{
+        model = { loads, highLoadThreshold }
+        updateStore({model, updateHandlers, error})
+        update()
+      })
+  }
 
-			model = { loads, highLoadThreshold }
-		}).catch(err => {
-			error = err
-		}).then(()=>{
-			updateStore({model, updateHandlers, error})
-			update()
-		})
-	}
+  update()
 
-	update()
-
-	return {
-		get model(){
-			return model
-		},
-		waitForUpdate(){
-			return waitForUpdate({updateHandlers})
-		}
-	}
+  return {
+    get model(){
+      return model
+    },
+    waitForUpdate(){
+      return waitForUpdate({updateHandlers})
+    }
+  }
 }
