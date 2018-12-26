@@ -5,13 +5,13 @@ export interface KeyStatistics {
 }
 
 export function keyStatisticsFrom({
-	uptimeChannel
+  uptimeChannel
 }: {
-	uptimeChannel: UptimeChannel
-}): KeyStatistics{
-	const updates = uptimeChannel.updateEvents
-	const updatesCount = updates.length
-	return {
-		uptime: updatesCount > 0 ? updates[updatesCount-1].stdout : ''
-	}
+  uptimeChannel: UptimeChannel
+}): KeyStatistics {
+  const updates = uptimeChannel.updateEvents
+  const updatesCount = updates.length
+  return {
+    uptime: updatesCount > 0 ? updates[updatesCount - 1].stdout : ''
+  }
 }

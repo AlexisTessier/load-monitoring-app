@@ -3,5 +3,5 @@ export function sumReducer(a: number, b: number): number {
 }
 
 export function sum(numbers: number[]): number {
-	return numbers.reduce(sumReducer, 0)
+  return numbers.reduce(sumReducer, 0)
 }

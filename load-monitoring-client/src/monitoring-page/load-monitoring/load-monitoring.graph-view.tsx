@@ -1,25 +1,25 @@
-import React, { ReactElement, Fragment } from 'react'
+import React, { Fragment, ReactElement } from 'react'
 
 import {
-  VictoryTheme,
-  VictoryChart,
+  DomainPropType,
   VictoryArea,
+  VictoryAxis,
+  VictoryChart,
+  VictoryLabel,
   VictoryLegend,
   VictoryLine,
-  VictoryAxis,
   VictoryStyleInterface,
-  DomainPropType,
-  VictoryLabel
+  VictoryTheme
 } from 'victory'
 
-import { Timestamp } from '../../definitions'
 import { minute } from '../../constants/durations'
-import { green, red, orange } from '../../settings/colors'
+import { Timestamp } from '../../definitions'
+import { green, orange, red } from '../../settings/colors'
 import { average } from '../../utils/average'
 
 import { LoadingData } from '../../components/loading-data'
 
-import { LoadMonitoring, Load, getLoadUtcTime, getLoadValue } from './load-monitoring.model'
+import { getLoadUtcTime, getLoadValue, LoadMonitoring } from './load-monitoring.model'
 
 export const lowAverageLoadColor = green
 export const highAverageLoadColor = red
@@ -56,7 +56,7 @@ export function LoadMonitoringGraphView({
   loads,
   highLoadThreshold
 }: LoadMonitoring): ReactElement<LoadMonitoring> {
-  if(loads.length < 2){
+  if (loads.length < 2) {
     return <LoadingData/>
   }
 

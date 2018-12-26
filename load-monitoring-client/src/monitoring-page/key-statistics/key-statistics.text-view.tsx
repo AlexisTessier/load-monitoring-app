@@ -1,4 +1,4 @@
-import React, { ReactElement, Fragment } from 'react'
+import React, { Fragment, ReactElement } from 'react'
 import styled from 'styled-components'
 
 import { KeyStatistics } from './key-statistics.model'
@@ -9,7 +9,7 @@ const Label = styled.span`
 `
 
 export function KeyStatisticsTextView({
-	uptime
+  uptime
 }: KeyStatistics): ReactElement<KeyStatistics> {
-	return <Fragment><Label>uptime stdout</Label> {uptime}</Fragment>
+  return <Fragment><Label>uptime stdout</Label> {uptime}</Fragment>
 }

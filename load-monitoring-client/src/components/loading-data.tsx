@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import styled from 'styled-components'
 
@@ -6,6 +6,6 @@ const Root = styled.div`
 	text-align: center;
 `
 
-export function LoadingData() {
-	return <Root>Loading data...</Root>
+export function LoadingData(): ReactElement<void> {
+  return <Root>Loading data...</Root>
 }

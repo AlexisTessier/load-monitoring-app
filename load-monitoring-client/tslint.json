@@ -117,7 +117,8 @@
     "unified-signatures": true,
     "variable-name": [
       true,
-      "check-format"
+      "check-format",
+      "allow-pascal-case"
     ],
     "whitespace": [
       true,
