@@ -1,7 +1,6 @@
-import React, { Fragment } from 'react'
+import React, { ReactElement, Fragment } from 'react'
 import styled from 'styled-components'
 
-import { ViewElement } from '../../mvc'
 import { Timestamp } from '../../definitions'
 
 import { minute } from '../../constants/durations'
@@ -37,8 +36,8 @@ function Toast({
 	</Fragment>
 }
 
-export function ToasterView({
+export function NotificationChannelMessagesThreadView({
 	notifyEvents
-}: NotificationChannel): ViewElement {
+}: NotificationChannel): ReactElement<NotificationChannel> {
 	return <Fragment>{notifyEvents.map((evt, i) => <Toast key={i} {...evt}/>)}</Fragment>
 }

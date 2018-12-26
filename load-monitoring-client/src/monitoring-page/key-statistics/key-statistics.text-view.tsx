@@ -1,7 +1,5 @@
-import React, { Fragment } from 'react'
+import React, { ReactElement, Fragment } from 'react'
 import styled from 'styled-components'
-
-import { ViewElement } from '../../mvc'
 
 import { KeyStatistics } from './key-statistics.model'
 
@@ -10,8 +8,8 @@ const Label = styled.span`
 	margin-right: 8px;
 `
 
-export function TextView({
+export function KeyStatisticsTextView({
 	uptime
-}: KeyStatistics): ViewElement {
+}: KeyStatistics): ReactElement<KeyStatistics> {
 	return <Fragment><Label>uptime stdout</Label> {uptime}</Fragment>
 }

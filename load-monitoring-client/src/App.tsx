@@ -1,23 +1,42 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { createGlobalStyle } from 'styled-components' 
 import reset from 'styled-reset'
 
-import { sseOrigin } from './settings/api'
 import { MonitoringPage } from './monitoring-page/monitoring-page.component'
+
+import { UptimeChannelStore } from './monitoring-page/uptime-channel/uptime-channel.store'
+import { NotificationChannelStore } from './monitoring-page/notification-channel/notification-channel.store'
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
 `
 
-const uptimeChannelEventSource = new EventSource(`${sseOrigin}/uptime`)
-const notificationChannelEventSource = new EventSource(`${sseOrigin}/notification`)
+export function App({
+  uptimeChannelStore,
+  notificationChannelStore
+}:{
+  uptimeChannelStore: UptimeChannelStore,
+  notificationChannelStore: NotificationChannelStore
+}): React.ReactElement<any> {
+  const [uptimeChannel, setUptimeChannel] = useState(uptimeChannelStore.model)
+  useEffect(()=>{
+    uptimeChannelStore.source.once('update', ()=>{
+      setUptimeChannel(uptimeChannelStore.model)
+    })
+  })
 
-export function App(): React.ReactElement<any> {
+  const [notificationChannel, setNotificationChannel] = useState(notificationChannelStore.model)
+  useEffect(()=>{
+    notificationChannelStore.source.once('update', ()=>{
+      setNotificationChannel(notificationChannelStore.model)
+    })
+  })
+
   return <Fragment>
     <GlobalStyle />
     <MonitoringPage
-    	uptimeChannelEventSource={uptimeChannelEventSource}
-    	notificationChannelEventSource={notificationChannelEventSource}
+    	uptimeChannel={uptimeChannel}
+    	notificationChannel={notificationChannel}
     />
   </Fragment>
 }

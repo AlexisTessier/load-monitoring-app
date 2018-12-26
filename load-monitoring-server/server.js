@@ -29,13 +29,15 @@ function uptime(){
     .map(s => s.trim())
     .filter(s => s.length > 0)
 
+  const end = uptimeTable.length
+
   return {
     stdout,
     utcTime: Date.now(),
     averageLoads:{
-      lastMinute: parseFloat(uptimeTable[5]),
-      last5Minutes: parseFloat(uptimeTable[6]),
-      last15Minutes: parseFloat(uptimeTable[7])
+      lastMinute: parseFloat(uptimeTable[end-3]),
+      last5Minutes: parseFloat(uptimeTable[end-2]),
+      last15Minutes: parseFloat(uptimeTable[end-1])
     }
   }
 }

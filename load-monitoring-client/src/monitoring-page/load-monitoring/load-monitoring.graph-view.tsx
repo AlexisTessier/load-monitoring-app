@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React, { ReactElement, Fragment } from 'react'
 
 import {
   VictoryTheme,
@@ -12,7 +12,6 @@ import {
   VictoryLabel
 } from 'victory'
 
-import { ViewElement } from '../../mvc'
 import { Timestamp } from '../../definitions'
 import { minute } from '../../constants/durations'
 import { green, red, orange } from '../../settings/colors'
@@ -53,11 +52,11 @@ const axisStyle = {
   }
 }
 
-export function GraphView({
+export function LoadMonitoringGraphView({
   loads,
   highLoadThreshold
-}: LoadMonitoring): ViewElement {
-  if(loads.length === 0){
+}: LoadMonitoring): ReactElement<LoadMonitoring> {
+  if(loads.length < 2){
     return <LoadingData/>
   }
 
