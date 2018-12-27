@@ -9,7 +9,8 @@ import { createNotificationChannelStore } from './monitoring-page/notification-c
 import { createUptimeChannelStore } from './monitoring-page/uptime-channel/uptime-channel.store'
 
 const uptimeChannelStore = createUptimeChannelStore({
-  eventSource: new EventSource(`${sseOrigin}/uptime`)
+  eventSource: new EventSource(`${sseOrigin}/uptime`),
+  dateNowGetter: () => Date.now()
 })
 
 const notificationChannelStore = createNotificationChannelStore({

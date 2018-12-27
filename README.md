@@ -1,12 +1,20 @@
 # Load Monitoring
 
-## Development environment
+## What could be improved
 
-### Requirements
+See the TODO.md file
+
+## Development environment requirements
 
 + docker
-+ make (optional actually, because you can copy/paste the docker commands in the Makefile)
-+ nothing more :)
++ make
+
+## Quick explanation
+
+The project is splitted in 2 parts:
+
++ **load-monitoring-client** is the front-end web application, which display the monitoring information
++ **load-monitoring-server** is the back-end, which collects the uptime data and send SSE to expose these data to the front-end
 
 ## Start working
 
@@ -34,42 +42,49 @@ These will expose the ports (see which ones in top of the Makefile) for accessin
 
 Eventually, you can do a *make dev_shell* to also run a container based on the dev image but which will not expose the ports (useful if you want to run other yarn commands while yarn start is running yet for example)
 
-## Build the project
+## Run the app in development mode 
+
+Once the dev image is built, you have to:
+
++ run the dev_server container 
 
 ```
-make build
+make dev_server
 ```
 
-This will:
++ then in that container, launch the server
 
-+ build the dist files in *load-monitoring-client/build* after passing all the tests, in CI environment compatible way.
-+ build the whole project... TODO
+```
+yarn install (if necessary)
+node server.js
+```
 
-## Server
++ then you have to run the dev_client container
 
-The working directory of the *make dev_server* container is *load-monitoring-server*
 
-## Client
+```
+make dev_client
+```
 
-The working directory of the *make dev_client* container is *load-monitoring-client*
++ and then in this container, launch the front-end dev server
+
+```
+yarn install (if necessary)
+yarn start
+```
 
 ### Stack
 
-+ React using https://github.com/facebook/create-react-app
-+ Typescript
-+ Jest for testing
++ Front end:
+	+ React using https://github.com/facebook/create-react-app
+		+ React hooks are available and seem very powerful, so I spent time to figure how to use them in order to make a no class project (just functions components).
+	+ Typescript
+	+ Jest for testing
+	+ Styled components
++ Back end:
+	+ Just a dirty javascript
 
-### Install dependencies
-
-```
-yarn install
-```
-
-### Run dev server
-
-```
-yarn start
-```
+## Front-end scripts
 
 ### Run tests and linter
 

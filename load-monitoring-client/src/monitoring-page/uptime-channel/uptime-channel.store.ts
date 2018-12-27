@@ -7,6 +7,7 @@ import {
 } from './uptime-channel.model'
 
 import { minute } from '../../constants/durations'
+import { Timestamp } from '../../definitions'
 
 export interface UptimeChannelStore {
   readonly model: UptimeChannel,
@@ -14,9 +15,11 @@ export interface UptimeChannelStore {
 }
 
 export function createUptimeChannelStore({
-  eventSource
+  eventSource,
+  dateNowGetter
 }: {
-  eventSource: EventSource
+  eventSource: EventSource,
+  dateNowGetter: () => Timestamp
 }): UptimeChannelStore {
   const source = new EventEmitter()
   const model: UptimeChannel = {
@@ -37,7 +40,7 @@ export function createUptimeChannelStore({
     }
 
     model.updateEvents = model.updateEvents.filter(_ => (
-      Date.now() - _.utcTime < 10 * minute
+      dateNowGetter() - _.utcTime < 10 * minute
     ))
     .sort(({utcTime: a}, {utcTime: b}) => a > b ? 1 : (a < b ? -1 : 0))
 

@@ -41,7 +41,7 @@ export function tryCreateUptimeChannelUpdateEvent(raw: UptimeChannelUpdateEvent)
   const averageLoads = raw.averageLoads
 
   if (typeof averageLoads !== 'object') {
-    throw error(`raw.averageLoads is not a number (${averageLoads})`)
+    throw error(`raw.averageLoads is not an object (${averageLoads})`)
   }
 
   if (typeof averageLoads.lastMinute !== 'number') {
