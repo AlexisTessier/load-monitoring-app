@@ -1,13 +1,13 @@
 #TO DO
 
-+ improve the (unexistent) design on the server part
++ improve the design of the server part
 	+ add typescript to enable easy and safe refactoring
 	+ add a test framework
 	+ split the server.js in order to make it testable and readable
 
 + creating a core project with common logic like load alert thresholding...
 
-+ while the front-end can be closed without losing the history, it's not the back-end case. Because the "persistence" is handled by the SSE history (in memory), if the back-end is stopped, the history will be lost. This could be improved. Some hints:
++ while the front-end can be stopped without losing the history, it's not the back-end case. Because the "persistence" is handled by the SSE history (in memory), if the back-end is stopped, the history will be lost. This could be improved. Some hints:
 	+ Maybe using a redis to persist the SSE
 	+ Maybe the uptime logs could be stored directly in a file on the monitored host
 

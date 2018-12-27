@@ -8,7 +8,7 @@ import {
 
 import { minute } from '../../../../constants/durations'
 
-const dateNowGetter = () => Date.now()
+const getDateNow = () => Date.now()
 
 describe('store creation', () => {
   test('model on creation', () => {
@@ -17,7 +17,7 @@ describe('store creation', () => {
       eventSource: <any>{
       addEventListener
       },
-      dateNowGetter
+      getDateNow
     })
 
     expect(addEventListener).toHaveBeenCalledTimes(1)
@@ -38,7 +38,7 @@ describe('store creation', () => {
       eventSource: <any>{
       addEventListener
       },
-      dateNowGetter
+      getDateNow
     })
 
     const event1: UptimeChannelUpdateEvent = {
@@ -72,7 +72,7 @@ describe('store creation', () => {
       eventSource: <any>{
       addEventListener
       },
-      dateNowGetter
+      getDateNow
     })
 
     const event1: UptimeChannelUpdateEvent = {
@@ -112,7 +112,7 @@ describe('store creation', () => {
       eventSource: <any>{
       addEventListener
       },
-      dateNowGetter
+      getDateNow
     })
 
     expect(() => {
@@ -132,7 +132,7 @@ describe('store creation', () => {
       eventSource: <any>{
       addEventListener
       },
-      dateNowGetter: () => now
+      getDateNow: () => now
     })
 
     const event0: UptimeChannelUpdateEvent = {

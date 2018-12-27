@@ -1,4 +1,7 @@
-import { Timestamp } from '../../definitions'
+import { minute } from '../../constants/durations'
+import { DateNowGetter, Timestamp } from '../../definitions'
+
+import { average } from '../../utils/average'
 
 import { UptimeChannel } from '../uptime-channel/uptime-channel.model'
 
@@ -9,13 +12,13 @@ export interface Load {
   value: LoadValue
 }
 
+export const getLoadUtcTime = (_: Load) => _.utcTime
+export const getLoadValue = (_: Load) => _.value
+
 export interface LoadMonitoring {
   loads: Load[],
   highLoadThreshold: LoadValue
 }
-
-export const getLoadUtcTime = (_: Load) => _.utcTime
-export const getLoadValue = (_: Load) => _.value
 
 export function loadMonitoringFrom({
   highLoadThreshold,
@@ -31,4 +34,20 @@ export function loadMonitoringFrom({
       value: _.averageLoads.lastMinute
     }))
   }
+}
+
+export function isRecentAverageLoadHigh({
+  loads,
+  highLoadThreshold
+}: LoadMonitoring, getDateNow: DateNowGetter): boolean {
+  const now = getDateNow()
+
+  const newerThan2Minutes = (timestamp: Timestamp) => (
+    now - timestamp <= 2 * minute
+  )
+
+  return average(loads
+    .filter(_ => newerThan2Minutes(_.utcTime))
+    .map(getLoadValue)
+  ) > highLoadThreshold
 }

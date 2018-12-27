@@ -15,11 +15,10 @@ import {
 import { minute } from '../../constants/durations'
 import { Timestamp } from '../../definitions'
 import { green, orange, red } from '../../settings/colors'
-import { average } from '../../utils/average'
 
 import { LoadingData } from '../../components/loading-data'
 
-import { getLoadUtcTime, getLoadValue, LoadMonitoring } from './load-monitoring.model'
+import { getLoadUtcTime, getLoadValue, isRecentAverageLoadHigh, LoadMonitoring } from './load-monitoring.model'
 
 export const lowAverageLoadColor = green
 export const highAverageLoadColor = red
@@ -59,8 +58,6 @@ export function LoadMonitoringGraphView({
   if (loads.length < 2) {
     return <LoadingData/>
   }
-
-  const now = Date.now()
   const getHighLoadThreshold = () => highLoadThreshold
   const loadAxisPadding = 0.05
 
@@ -70,14 +67,10 @@ export function LoadMonitoringGraphView({
     y: [0, loadAxisPadding + Math.max(highLoadThreshold, ...loads.map(getLoadValue))]
   }
 
-  const newerThan2Minutes = (timestamp: Timestamp) => (
-    now - timestamp <= 2 * minute
-  )
-
-  const highAverageLoad = average(loads
-    .filter(_ => newerThan2Minutes(_.utcTime))
-    .map(getLoadValue)
-  ) > highLoadThreshold
+  const now = Date.now()
+  const highAverageLoad = isRecentAverageLoadHigh({
+    loads, highLoadThreshold
+  }, () => now)
 
   const timezoneOffset = new Date().getTimezoneOffset() * minute
   const formatLoadUtcTime = (x: Timestamp) => new Date(x + timezoneOffset).toLocaleTimeString()

@@ -1,6 +1,7 @@
 export const protocol = 'http'
 export const host = 'localhost'
-export const port = '3002'
+
+export const port = process.env.REACT_APP_API_PORT
 
 export const apiOrigin = `${protocol}://${host}:${port}`
 
